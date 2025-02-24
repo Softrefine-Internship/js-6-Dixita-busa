@@ -13,9 +13,16 @@ const arr = [
 
 async function asyncFunctions(arr) {
   for (let i = 0; i < arr.length; i++) {
-    const res = await fetch(arr[i]);
-    const data = await res.json();
-    console.log(data);
+    try {
+      const res = await fetch(arr[i]);
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error(`Error fetching ${arr[i]}:`, error);
+    }
   }
 }
 

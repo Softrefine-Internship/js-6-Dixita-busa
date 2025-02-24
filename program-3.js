@@ -9,10 +9,14 @@ const urls = [
   "https://jsonplaceholder.typicode.com/users/5"
 ];
 
-for (let i = 0; i < urls.length; i++) {
-  fetch(urls[i]).then((res) => {
-    res.json().then((data) => {
-      console.log(data);
-    });
-  });
+async function fetchAllUrls(urls) {
+  try {
+    const responses = await Promise.all(urls.map(url => fetch(url)));
+    const data = await Promise.all(responses.map(res => res.json()));
+    console.log(data);
+  } catch (error) {
+    console.error("Error fetching URLs:", error);
+  }
 }
+
+fetchAllUrls(urls);
